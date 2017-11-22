@@ -1,8 +1,22 @@
 # Import pandas
 import pandas as pd
 import numpy as np
-#from matplotlib import pyplot as plt
-import gmplot
+from matplotlib import pyplot as plt
+
+def chart(occurance_list):
+    hour_list = [t.hour for t in occurance_list]
+    print hour_list
+    numbers=[x for x in xrange(0,24)]
+    labels=map(lambda x: str(x), numbers)
+    plt.xticks(numbers, labels)
+    plt.xlim(0,24)
+    plt.hist(hour_list,rwidth=0.8)
+    plt.title("Accident Report Hourly")
+    plt.xlabel("Hour of the day")
+    plt.ylabel("Number of Accidents")
+    plt.yticks(np.arange(0,36,1))
+    plt.show()
+
 
 def writehtml(Lat,Long,CaseID,Summary,Time):
     myfile = "mymap_withSummary_andtime_sleepy.html"
@@ -95,7 +109,8 @@ GPSLong= np.array((df1.loc[:]['GPS_LONG']))
 CaseID = (df1.loc[:]['CASEID'])
 Summary = (df1.loc[:]['SUMMARY'])
 Time = (df1.loc[:]['Time'])
-
+Timedata_array = np.array(Time)
+chart(Timedata_array)
 writehtml(GPSLat,GPSLong,CaseID,Summary,Time)
 #print(Timedata)
 #print(Timedata_array)
