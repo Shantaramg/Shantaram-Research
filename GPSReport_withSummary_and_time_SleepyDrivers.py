@@ -5,7 +5,7 @@ import numpy as np
 import gmplot
 
 def writehtml(Lat,Long,CaseID,Summary,Time):
-    myfile = "mymap_withSummary_andtime.html"
+    myfile = "mymap_withSummary_andtime_sleepy.html"
     f = open(myfile, 'w')
     f.write("<html>\n")
     f.write("<head>\n")
@@ -64,6 +64,7 @@ def writehtml(Lat,Long,CaseID,Summary,Time):
 # Assign spreadsheet filename to `file`
 file = '/home/shantaram/PycharmProjects/AccidentResearch/Excel Sheets/Accident.xlsx'
 
+
 # Load spreadsheet
 xl = pd.ExcelFile(file)
 
@@ -75,7 +76,19 @@ df = xl.parse('Accident')
 
 #filter only rollover accidents
 #df1=df.loc[df['RELINTER'] == 4]
-df1 = df
+#df1 = df
+#Filter for sleepy drivers and store only those in df
+file2 = '/home/shantaram/PycharmProjects/AccidentResearch/Excel Sheets/Contributing Factor Details.xlsx'
+xl2 = pd.ExcelFile(file2)
+# Print the sheet names
+print(xl2.sheet_names)
+
+df2 = xl2.parse('Contributing Factors')
+df2Sleepy = df2.loc[df2['CF_CODE'] == 1103]
+print df2Sleepy
+sleepycaseid = df2Sleepy.loc[:]['CASEID']
+df1 = df[df['CASEID'].isin(sleepycaseid)]
+
 #print(df1)
 GPSLat= np.array((df1.loc[:]['GPS_LAT']))
 GPSLong= np.array((df1.loc[:]['GPS_LONG']))
